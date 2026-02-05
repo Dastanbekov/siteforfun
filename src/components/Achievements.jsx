@@ -4,8 +4,8 @@ import AchievementCard from './AchievementCard';
 const achievements = [
     { title: 'ICPC Kyrgyzstan Regionals', description: 'Competed in ICPC at the regional level. Demonstrated strong algorithmic problem-solving under competitive pressure.', badge: 'Certification', gradient: 'from-blue-500 to-indigo-600', iconImage: '/assets/icpc-icon.png', certificateImage: '/assets/icpc-certificate.png' },
     { title: 'CodeRun Challenge Champion', description: 'Double winner of CodeRun challenges. First place in Boost Challenge and Winter Challenge.', badge: '2x Winner', gradient: 'from-orange-500 to-red-600', iconImage: '/assets/coderun-icon.png', certificateImage: '/assets/coderun-certificate.png' },
-    { title: 'TSI Contest', description: 'Achieved 2nd place in TSI Contest. Demonstrated expertise in technical problem-solving.', badge: '2nd Degree', gradient: 'from-purple-500 to-pink-600', iconImage: '/assets/tsi-icon.png', certificateImage: '/assets/tsi-certificate.png' },
-    { title: 'Government Hackathon', description: 'Won "Digitalization of Kyrgyz Republic" Hackathon with InfraMap urban planning tool.', badge: 'Winner', prize: '$1,200', gradient: 'from-emerald-500 to-teal-600', iconImage: '/assets/hackathon-icon.png', certificateImage: '/assets/hackathon-certificate.png' },
+    { title: 'TSI Contest', description: 'Achieved 2nd place in TSI Contest. Demonstrated expertise in technical problem-solving.', badge: '2nd Degree', gradient: 'from-purple-500 to-pink-600', iconImage: '/assets/tsi-icon.png' },
+    { title: 'Government Hackathon', description: 'Won "Digitalization of Kyrgyz Republic" Hackathon with InfraMap urban planning tool.', badge: 'Winner', prize: '$1,200', gradient: 'from-emerald-500 to-teal-600', certificateImage: '/assets/hackathon-certificate.png' },
 ];
 
 const stats = [
@@ -42,10 +42,15 @@ const Achievements = () => {
                     {/* Stats */}
                     <div className="grid grid-cols-4 gap-4 mb-12">{statsRender}</div>
 
-                    {/* Cards */}
+                    {/* Achievement Cards */}
                     <div className="grid md:grid-cols-2 gap-5">
                         {achievements.map((achievement, index) => (
-                            <AchievementCard key={achievement.title} achievement={achievement} index={index} onClick={() => achievement.certificateImage && setSelectedCertificate(achievement)} />
+                            <AchievementCard
+                                key={achievement.title}
+                                achievement={achievement}
+                                index={index}
+                                onClick={() => achievement.certificateImage && setSelectedCertificate(achievement)}
+                            />
                         ))}
                     </div>
 
@@ -56,7 +61,7 @@ const Achievements = () => {
                 </div>
             </div>
 
-            {/* Modal */}
+            {/* Certificate Modal */}
             {selectedCertificate && (
                 <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedCertificate(null)}>
                     <div className="relative max-w-4xl max-h-[90vh] w-full">

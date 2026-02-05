@@ -1,5 +1,6 @@
 import { useState, memo } from 'react';
 import ProjectCard from './ProjectCard';
+import { TubesBackground } from './ui/neon-flow';
 
 const projects = [
     {
@@ -43,30 +44,35 @@ const Projects = () => {
     return (
         <section id="projects" className="py-20 relative">
             <div className="max-w-7xl mx-auto px-6">
-                {/* Section Container */}
-                <div className="w-full bg-white/[0.02] border border-white/10 rounded-2xl p-8 lg:p-12">
-                    {/* Header */}
-                    <div className="text-center mb-16">
-                        <span className="text-secondary font-mono text-sm mb-4 block opacity-50">&lt;projects&gt;</span>
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-                            Featured <span className="bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">Projects</span>
-                        </h2>
-                        <p className="text-neutral-500 text-lg max-w-2xl mx-auto">
-                            Building scalable solutions that make a real impact.
-                        </p>
-                    </div>
+                {/* Section Container with Neon Flow Background */}
+                <div className="w-full rounded-2xl overflow-hidden relative">
+                    <TubesBackground className="min-h-[800px]" enableClickInteraction={true}>
+                        <div className="bg-black/60 backdrop-blur-sm p-8 lg:p-12 min-h-full">
+                            {/* Header */}
+                            <div className="text-center mb-16">
+                                <span className="text-secondary font-mono text-sm mb-4 block opacity-50">&lt;projects&gt;</span>
+                                <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+                                    Featured <span className="bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">Projects</span>
+                                </h2>
+                                <p className="text-neutral-400 text-lg max-w-2xl mx-auto">
+                                    Building scalable solutions that make a real impact.
+                                </p>
+                                <p className="text-neutral-600 text-xs mt-2">Click background to randomize colors</p>
+                            </div>
 
-                    {/* Projects */}
-                    <div className="space-y-20">
-                        {projects.map((project, index) => (
-                            <ProjectCard key={project.name} project={project} index={index} onImageClick={() => setSelectedImage(project.image)} />
-                        ))}
-                    </div>
+                            {/* Projects */}
+                            <div className="space-y-20 pointer-events-auto">
+                                {projects.map((project, index) => (
+                                    <ProjectCard key={project.name} project={project} index={index} onImageClick={() => setSelectedImage(project.image)} />
+                                ))}
+                            </div>
 
-                    {/* Footer */}
-                    <div className="text-center mt-16">
-                        <span className="text-secondary font-mono text-sm opacity-50">&lt;/projects&gt;</span>
-                    </div>
+                            {/* Footer */}
+                            <div className="text-center mt-16">
+                                <span className="text-secondary font-mono text-sm opacity-50">&lt;/projects&gt;</span>
+                            </div>
+                        </div>
+                    </TubesBackground>
                 </div>
             </div>
 

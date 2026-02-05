@@ -1,5 +1,5 @@
 import { useEffect, useState, memo, useMemo } from 'react';
-import { SplineScene } from './ui/spline';
+import { ShaderAnimation } from './ui/shader-lines';
 
 const SKILLS = ['Python', 'Django', 'PostgreSQL', 'REST APIs', 'PostGIS', 'Docker'];
 const FULL_TEXT = 'Backend Engineer';
@@ -11,7 +11,20 @@ const SOCIAL_LINKS = [
     { name: 'GitHub', href: 'https://github.com/dastanbekov', path: 'M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z', fill: true },
 ];
 
-// Optimized components with displayName
+const CODE_LINES = [
+    { type: 'keyword', content: 'class ', rest: 'BackendEngineer:' },
+    { type: 'function', content: '    def ', rest: '__init__(self):' },
+    { type: 'string', content: '        self.name = ', rest: '"Aitmyrza"' },
+    { type: 'string', content: '        self.role = ', rest: '"Backend Engineer"' },
+    { type: 'array', content: '        self.skills = ', rest: '[' },
+    { type: 'items', content: '            "Python", "Django",' },
+    { type: 'items', content: '            "PostgreSQL", "REST APIs"' },
+    { type: 'array', content: '        ', rest: ']' },
+    { type: 'empty', content: '' },
+    { type: 'function', content: '    def ', rest: 'build(self, project):' },
+    { type: 'keyword', content: '        return ', rest: 'Success(project)' },
+];
+
 const SocialIcon = memo(({ path, fill }) => (
     <svg className="w-5 h-5" fill={fill ? 'currentColor' : 'none'} stroke={fill ? undefined : 'currentColor'} viewBox="0 0 24 24">
         {fill ? <path d={path} /> : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={path} />}
@@ -37,8 +50,49 @@ const SkillBadge = memo(({ skill }) => (
 ));
 SkillBadge.displayName = 'SkillBadge';
 
+const CodeBlock = memo(() => (
+    <div className="bg-black/50 rounded-xl border border-white/10 overflow-hidden backdrop-blur-sm">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5">
+            <div className="w-3 h-3 rounded-full bg-red-500/80" />
+            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+            <div className="w-3 h-3 rounded-full bg-green-500/80" />
+            <span className="ml-3 text-xs font-mono text-neutral-500">backend_engineer.py</span>
+        </div>
+        <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm overflow-x-auto">
+            {CODE_LINES.map((line, i) => (
+                <div key={i} className="flex">
+                    <span className="w-6 sm:w-8 text-neutral-600 select-none">{i + 1}</span>
+                    <span>
+                        {line.type === 'keyword' && <span className="text-purple-400">{line.content}</span>}
+                        {line.type === 'function' && <span className="text-blue-400">{line.content}</span>}
+                        {line.type === 'string' && <span className="text-neutral-400">{line.content}</span>}
+                        {line.type === 'array' && <span className="text-neutral-400">{line.content}</span>}
+                        {line.type === 'items' && <span className="text-emerald-400">{line.content}</span>}
+                        {line.type === 'empty' && <span>&nbsp;</span>}
+                        {line.rest && (
+                            <span className={
+                                line.type === 'keyword' ? 'text-cyan-300' :
+                                    line.type === 'function' ? 'text-yellow-300' :
+                                        line.type === 'string' ? 'text-emerald-400' :
+                                            'text-neutral-300'
+                            }>{line.rest}</span>
+                        )}
+                    </span>
+                </div>
+            ))}
+            <div className="flex mt-2">
+                <span className="w-6 sm:w-8 text-neutral-600 select-none">12</span>
+                <span className="text-neutral-500">
+                    <span className="inline-block w-2 h-4 bg-primary animate-blink ml-1" />
+                </span>
+            </div>
+        </div>
+    </div>
+));
+CodeBlock.displayName = 'CodeBlock';
+
 const ScrollIndicator = memo(() => (
-    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-20">
+    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-20 hidden lg:block">
         <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
             <div className="w-1.5 h-3 rounded-full bg-primary" />
         </div>
@@ -48,9 +102,7 @@ ScrollIndicator.displayName = 'ScrollIndicator';
 
 const Hero = () => {
     const [typedText, setTypedText] = useState('');
-    const [showSpline, setShowSpline] = useState(false);
 
-    // Typing animation
     useEffect(() => {
         let index = 0;
         const timer = setInterval(() => {
@@ -64,28 +116,23 @@ const Hero = () => {
         return () => clearInterval(timer);
     }, []);
 
-    // Defer Spline load
-    useEffect(() => {
-        if ('requestIdleCallback' in window) {
-            const id = requestIdleCallback(() => setShowSpline(true), { timeout: 500 });
-            return () => cancelIdleCallback(id);
-        } else {
-            const timer = setTimeout(() => setShowSpline(true), 300);
-            return () => clearTimeout(timer);
-        }
-    }, []);
-
     const skillsRender = useMemo(() => SKILLS.map((skill) => <SkillBadge key={skill} skill={skill} />), []);
     const socialLinksRender = useMemo(() => SOCIAL_LINKS.map((link) => <SocialLink key={link.name} link={link} />), []);
 
     return (
-        <section id="about" className="min-h-screen relative pt-8 pb-20 contain-layout">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="w-full min-h-[85vh] bg-white/[0.02] border border-white/10 rounded-2xl">
-                    <div className="flex flex-col lg:flex-row h-full min-h-[85vh]">
-                        {/* Left */}
-                        <div className="flex-1 p-8 lg:p-12 relative z-10 flex flex-col justify-center">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-mono text-secondary mb-6 w-fit">
+        <section id="about" className="min-h-screen relative pt-8 pb-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                <div className="w-full min-h-[85vh] bg-white/[0.02] border border-white/10 rounded-2xl p-6 sm:p-8 lg:p-12 relative overflow-hidden">
+                    {/* Shader Background - full width */}
+                    <div className="absolute inset-0 z-0">
+                        <ShaderAnimation />
+                    </div>
+
+                    {/* Content */}
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[75vh] relative z-10">
+                        {/* Left - Content */}
+                        <div className="flex flex-col justify-center">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-sm font-mono text-secondary mb-6 w-fit">
                                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                                 Available for work
                             </div>
@@ -96,7 +143,7 @@ const Hero = () => {
                                 <span className="text-neutral-500">{typedText}<span className="inline-block w-0.5 h-[1em] bg-secondary ml-1 animate-blink" /></span>
                             </h1>
 
-                            <p className="text-lg text-neutral-400 max-w-xl leading-relaxed mb-6">
+                            <p className="text-lg text-neutral-400 max-w-xl leading-relaxed mb-6 bg-black/40 backdrop-blur-sm rounded-lg p-3">
                                 Results-oriented Backend Engineer specializing in <span className="text-primary font-medium">high-performance RESTful APIs</span>, complex <span className="text-secondary font-medium">database architectures</span>, and system optimization.
                             </p>
 
@@ -105,13 +152,13 @@ const Hero = () => {
 
                             <div className="flex flex-wrap gap-4">
                                 <a href="#projects" className="px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-primary/80 font-semibold transition-colors hover:to-secondary">View My Work</a>
-                                <a href="#contact" className="px-8 py-4 rounded-xl border border-white/10 font-semibold transition-colors hover:border-white/30 hover:bg-white/5">Contact Me</a>
+                                <a href="#contact" className="px-8 py-4 rounded-xl border border-white/10 font-semibold transition-colors hover:border-white/30 hover:bg-white/5 backdrop-blur-sm">Contact Me</a>
                             </div>
                         </div>
 
-                        {/* Right - 3D */}
-                        <div className="flex-1 relative min-h-[400px] lg:min-h-0 contain-layout">
-                            {showSpline && <SplineScene scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" className="w-full h-full" />}
+                        {/* Right - Code Block */}
+                        <div className="flex items-center justify-center">
+                            <CodeBlock />
                         </div>
                     </div>
                 </div>
