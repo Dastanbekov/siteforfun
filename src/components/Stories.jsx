@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { Camera } from 'lucide-react';
 import { StoryViewer } from './ui/story-viewer';
 
 /**
@@ -57,7 +58,7 @@ const stories = [
         gradient: 'from-orange-500 to-red-600',
         avatar: '/assets/coderun-icon.png',
         stories: [
-            { id: 'coderun-1', type: 'image', src: '/assets/coderun-winter.png' },
+            { id: 'coderun-2', type: 'image', src: '/assets/coderun-winter.png' },
         ],
     },
     {
@@ -65,7 +66,7 @@ const stories = [
         gradient: 'from-orange-500 to-red-600',
         avatar: '/assets/eth-logo.png',
         stories: [
-            { id: 'coderun-1', type: 'image', src: '/assets/eth-photo.jpg' },
+            { id: 'eth-1', type: 'image', src: '/assets/eth-photo.jpg' },
         ],
     },
     {
@@ -73,10 +74,9 @@ const stories = [
         gradient: 'from-orange-500 to-red-600',
         avatar: '/assets/startup-logo.png',
         stories: [
-            { id: 'coderun-1', type: 'image', src: '/assets/startup-photo.png' },
+            { id: 'startup-1', type: 'image', src: '/assets/startup-photo.png' },
         ],
     },
-    // Добавь сюда свои Stories по инструкции выше ☝️
 ];
 
 const Stories = () => {
@@ -87,7 +87,8 @@ const Stories = () => {
                     {/* Header */}
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                            <span></span> Events
+                            <Camera className="w-5 h-5 text-primary" />
+                            Events
                         </h3>
                         <span className="text-xs text-neutral-500 font-mono">tap to view</span>
                     </div>

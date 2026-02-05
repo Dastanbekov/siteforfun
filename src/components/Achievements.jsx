@@ -1,4 +1,5 @@
 import { useState, memo, useMemo } from 'react';
+import { Trophy, Rocket, DollarSign, Users } from 'lucide-react';
 import AchievementCard from './AchievementCard';
 
 const achievements = [
@@ -9,10 +10,10 @@ const achievements = [
 ];
 
 const stats = [
-    { value: '4+', label: 'Wins', icon: '🏆' },
-    { value: '2', label: 'Projects', icon: '🚀' },
-    { value: '$1.2K', label: 'Prize', icon: '💰' },
-    { value: '30+', label: 'Users', icon: '👥' },
+    { value: '4+', label: 'Wins', Icon: Trophy },
+    { value: '2', label: 'Projects', Icon: Rocket },
+    { value: '$1.2K', label: 'Prize', Icon: DollarSign },
+    { value: '30+', label: 'Users', Icon: Users },
 ];
 
 const Achievements = () => {
@@ -20,7 +21,7 @@ const Achievements = () => {
 
     const statsRender = useMemo(() => stats.map((stat, i) => (
         <div key={i} className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
-            <span className="text-2xl mb-1 block">{stat.icon}</span>
+            <stat.Icon className="w-6 h-6 mx-auto mb-2 text-primary" />
             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 block">{stat.value}</span>
             <span className="text-neutral-500 text-xs">{stat.label}</span>
         </div>
