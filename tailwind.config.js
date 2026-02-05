@@ -26,6 +26,7 @@ export default {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'typing': 'typing 3.5s steps(40, end)',
         'blink': 'blink 1s step-end infinite',
+        'spotlight': 'spotlight 2s ease .75s 1 forwards',
       },
       keyframes: {
         gradient: {
@@ -43,6 +44,16 @@ export default {
         blink: {
           'from, to': { borderColor: 'transparent' },
           '50%': { borderColor: '#22d3ee' },
+        },
+        spotlight: {
+          '0%': {
+            opacity: '0',
+            transform: 'translate(-72%, -62%) scale(0.5)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translate(-50%, -40%) scale(1)',
+          },
         },
       },
       backgroundImage: {
